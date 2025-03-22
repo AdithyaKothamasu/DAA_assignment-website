@@ -1,25 +1,3 @@
-Reading file...
-Total edges read: 183831 (undirected)
-Total nodes found: 36692
-Graph Loaded! Nodes: 36692
-Starting Run 1...
-... [Degeneracy Ordering Done]
-
-Run 1 execution time: 225931 ms
-
---- Execution Time Table ---
----------------------------------
-| Run # | Execution Time (ms)    |
----------------------------------  
-|     1  |      225931 ms   |
----------------------------------
-| Avg   |      225931 ms   |
----------------------------------
-
---- Summary ---
-Total number of maximal cliques: 226859
-Largest clique size: 20
-
 ===== Clique Size Distribution =====
 +-------------+-------------------+
 | Clique Size | Number of Cliques |
@@ -44,3 +22,7 @@ Largest clique size: 20
 |          19 |                10 |
 |          20 |                 6 |
 +-------------+-------------------+
+
+Total Number of Cliques: 226859
+Largest Clique Size: 20
+Execution Time: 4957 ms

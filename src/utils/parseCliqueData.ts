@@ -15,10 +15,16 @@ export interface ParsedELSOutput {
 
 export async function parseELSOutput(filePath: string): Promise<ParsedELSOutput> {
   try {
-    const response = await fetch(filePath);
+    // Add base path for absolute paths
+    const adjustedPath = filePath.startsWith('/') 
+      ? import.meta.env.BASE_URL + filePath.slice(1) 
+      : filePath;
+    
+    // console.log('Fetching data from:', adjustedPath);
+    const response = await fetch(adjustedPath);
     
     if (!response.ok) {
-      throw new Error(`Failed to load file: ${filePath}`);
+      throw new Error(`Failed to load file: ${filePath} (Status: ${response.status})`);
     }
     
     const text = await response.text();
@@ -27,51 +33,74 @@ export async function parseELSOutput(filePath: string): Promise<ParsedELSOutput>
     // Extract file name from path for test case name
     const pathParts = filePath.split('/');
     const fileName = pathParts[pathParts.length - 1];
-    const testCase = fileName.includes('Email-Enron') ? 'Email-Enron' : 'WikiVote';
-    
-    // Find total cliques line
-    const totalCliquesLine = lines.find(line => line.includes('Total number of maximal cliques:'));
-    const totalCliques = totalCliquesLine 
-      ? parseInt(totalCliquesLine.split(':')[1].trim()) 
-      : 0;
-    
-    // Find largest clique size line
-    const largestCliqueLine = lines.find(line => line.includes('Largest clique size:'));
-    const largestCliqueSize = largestCliqueLine 
-      ? parseInt(largestCliqueLine.split(':')[1].trim()) 
-      : 0;
+    let testCase = 'Unknown';
+    if (fileName.includes('Email-Enron')) {
+      testCase = 'Email-Enron';
+    } else if (fileName.includes('WikiVote')) {
+      testCase = 'WikiVote';
+    } else if (fileName.includes('skitter')) {
+      testCase = 'Skitter';
+    }
     
     // Parse distribution table
     const distribution: CliqueDistribution[] = [];
-    let inDistributionTable = false;
+    let totalCliques = 0;
+    let largestCliqueSize = 0;
     
-    for (const line of lines) {
-      if (line.includes('===== Clique Size Distribution =====')) {
-        inDistributionTable = true;
-        continue;
-      }
+    // Find the line that marks the start of the clique size distribution table
+    const tableSectionIndex = lines.findIndex(line => 
+      line.includes("| Clique Size | Number of Cliques")
+    );
+    
+    if (tableSectionIndex !== -1) {
+      // Skip the header and separator lines
+      let i = tableSectionIndex + 2;
       
-      if (inDistributionTable) {
-        // Skip table header lines
-        if (line.includes('Clique Size') || line.includes('-------------') || line.trim() === '') {
-          continue;
-        }
+      // Read data rows until we hit a line that doesn't match the pattern
+      while (i < lines.length) {
+        const line = lines[i];
         
-        // End of table
-        if (line.includes('-----') && !line.includes('|')) {
+        // Check if we've reached the end of the table
+        if (!line.includes('|') || line.includes('----')) {
           break;
         }
         
-        // Parse data row
-        const matches = line.match(/\|\s*(\d+)\s*\|\s*(\d+)\s*\|/);
+        // Parse the data row - handle padding variations
+        const matches = line.match(/\|\s*(\d+)\s*\|\s*(\d+)/);
         if (matches && matches.length === 3) {
           distribution.push({
             cliqueSize: parseInt(matches[1]),
-            count: parseInt(matches[2])
+            count: parseInt(matches[2].replace(/,/g, ''))
           });
         }
+        
+        i++;
       }
     }
+    
+    // Find total cliques count
+    const totalCliquesLine = lines.find(line => 
+      line.includes("Total Number of Maximal Cliques:") || 
+      line.includes("Total Number of Cliques:")
+    );
+    
+    if (totalCliquesLine) {
+      const matches = totalCliquesLine.match(/\d+/);
+      if (matches) {
+        totalCliques = parseInt(matches[0]);
+      }
+    } else if (distribution.length > 0) {
+      // Calculate total if not found in file
+      totalCliques = distribution.reduce((sum, item) => sum + item.count, 0);
+    }
+    
+    // Find largest clique size or calculate from distribution
+    if (distribution.length > 0) {
+      largestCliqueSize = Math.max(...distribution.map(item => item.cliqueSize));
+    }
+    
+    // Sort distribution by clique size for proper display
+    distribution.sort((a, b) => a.cliqueSize - b.cliqueSize);
     
     return {
       totalCliques,
@@ -80,7 +109,7 @@ export async function parseELSOutput(filePath: string): Promise<ParsedELSOutput>
       testCase
     };
   } catch (error) {
-    console.error('Error parsing ELS output:', error);
+    console.error('Error parsing clique data:', error);
     return {
       totalCliques: 0,
       largestCliqueSize: 0,

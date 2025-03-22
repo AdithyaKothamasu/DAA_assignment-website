@@ -15,7 +15,7 @@ function App() {
       name: "Chiba-1985-arboricity",
       nameingraph: "Chiba",
       paper: "Arboricity And Subgraph Listing Algorithms by Norishige Chiba and Takao Nishizeki",
-      paperUrl: "/papers/chiba copy.pdf",  // Replace with actual URL
+      paperUrl: `${import.meta.env.BASE_URL}papers/chiba copy.pdf`,
       timeComplexity: "O(n log n)",
       results: {
         testCase1: 120,
@@ -24,39 +24,39 @@ function App() {
       },
       implementation: {
         language: 'cpp',
-        filePath: '/code/chiba.cpp'
+        filePath: `${import.meta.env.BASE_URL}code/chiba.cpp`
       }
     },
     {
       name: "tomita06cliques",
       nameingraph: "Tomita",
       paper: "The worst-case time complexity for generating all maximal cliques and computational experiments",
-      paperUrl: "/papers/tomita copy.pdf",  // Replace with actual URL
+      paperUrl: `${import.meta.env.BASE_URL}papers/tomita copy.pdf`,
       timeComplexity: "O(3^(n/3))",
       results: {
-        testCase1: 881740,
-        testCase2: 280,
-        testCase3: 420
+        testCase1: 2557,
+        testCase2: 4957,
+        testCase3: 19634409
       },
       implementation: {
         language: 'cpp',
-        filePath: '/code/Tomita.cpp'
+        filePath: `${import.meta.env.BASE_URL}code/Tomita.cpp`
       }
     },
     {
       name: "ELS",
       nameingraph: "ELS",
       paper: "Listing All Maximal Cliques in Sparse Graphs in Near-optimal Time",
-      paperUrl: "/papers/ELS copy.pdf",  // Replace with actual URL
+      paperUrl: `${import.meta.env.BASE_URL}papers/ELS copy.pdf`,
       timeComplexity: "O(dn.3^(d/3))",
       results: {
-        testCase1: 129385,
-        testCase2: 225931,
-        testCase3: 350
+        testCase1: 3259,
+        testCase2: 4657,
+        testCase3: 1.33532e+07
       },
       implementation: {
         language: 'cpp',
-        filePath: '/code/ELS.cpp'
+        filePath: `${import.meta.env.BASE_URL}code/ELS.cpp`
       }
     }
   ];
@@ -64,7 +64,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-8xl mx-auto px-10 py-8">
         <div className="space-y-12">
           {activeTab === 'overview' ? (
             <Overview 

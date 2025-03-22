@@ -22,10 +22,11 @@ ChartJS.register(
 
 interface Props {
   testNum: number;
+  datasetName: string;
   algorithms: AlgorithmData[];
 }
 
-export function BarChartJS({ testNum, algorithms }: Props) {
+export function BarChartJS({ testNum, datasetName, algorithms }: Props) {
   const testCaseKey = `testCase${testNum}` as keyof typeof algorithms[0]['results'];
   const values = algorithms.map(algo => algo.results[testCaseKey]);
   
@@ -65,7 +66,7 @@ export function BarChartJS({ testNum, algorithms }: Props) {
       },
       title: {
         display: true,
-        text: `Test Case ${testNum}`,
+        text: `${datasetName} Dataset`,
         font: {
           size: 16,
           weight: 'bold' as const,

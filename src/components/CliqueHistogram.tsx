@@ -24,9 +24,10 @@ ChartJS.register(
 interface Props {
   outputFile: string;
   title: string;
+  height?: number;
 }
 
-export function CliqueHistogram({ outputFile, title }: Props) {
+export function CliqueHistogram({ outputFile, title, height = 400 }: Props) {
   const [data, setData] = useState<ParsedELSOutput | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export function CliqueHistogram({ outputFile, title }: Props) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[400px] bg-white rounded-lg shadow p-4">
+      <div className="flex justify-center items-center bg-white rounded-lg shadow p-4" style={{ height: `${height}px` }}>
         <p>Loading histogram data...</p>
       </div>
     );
@@ -58,7 +59,7 @@ export function CliqueHistogram({ outputFile, title }: Props) {
 
   if (error || !data) {
     return (
-      <div className="flex justify-center items-center h-[400px] bg-white rounded-lg shadow p-4">
+      <div className="flex justify-center items-center bg-white rounded-lg shadow p-4" style={{ height: `${height}px` }}>
         <p className="text-red-500">{error || 'Could not load histogram data'}</p>
       </div>
     );
@@ -79,6 +80,7 @@ export function CliqueHistogram({ outputFile, title }: Props) {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
@@ -104,24 +106,35 @@ export function CliqueHistogram({ outputFile, title }: Props) {
         title: {
           display: true,
           text: 'Number of Cliques',
+          font: {
+            weight: 'bold' as const
+          }
         },
+        ticks: {
+          callback: function(value: any) {
+            return value.toLocaleString();
+          }
+        }
       },
       x: {
         title: {
           display: true,
           text: 'Clique Size',
-        },
+          font: {
+            weight: 'bold' as const
+          }
+        }
       },
     },
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 h-[400px]">
+    <div className="bg-white rounded-lg shadow-md p-4" style={{ height: `${height}px` }}>
       <div className="text-sm text-gray-500 mb-2">
-        Total Cliques: {data.totalCliques.toLocaleString()} | 
-        Largest Clique Size: {data.largestCliqueSize}
+        <strong>Total Cliques:</strong> {data.totalCliques.toLocaleString()} | 
+        <strong> Largest Clique Size:</strong> {data.largestCliqueSize}
       </div>
-      <div className="h-[320px]">
+      <div style={{ height: `${height - 40}px` }}>
         <Bar 
           data={chartData} 
           options={chartOptions}

@@ -1,10 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <unordered_set>
 #include <unordered_map>
 #include <fstream>
 #include <sstream>
-#include <set>
 #include <algorithm>
 #include <iomanip>
 #include <chrono>
@@ -12,9 +10,8 @@
 using namespace std;
 using namespace chrono;
 
-unordered_set<int> currentClique;
+vector<int> currentClique;
 unordered_map<int, int> size_to_count;
-unordered_set<string> uniqueCliques; // Stores cliques in sorted order
 int totalCliques = 0;
 int largestCliqueSize = 0;
 
@@ -23,103 +20,130 @@ void printTableRow(T a, T b) {
     cout << "| " << setw(10) << a << " | " << setw(15) << b << " |\n";
 }
 
-void expand(const unordered_set<int>& subgraph, unordered_set<int> candidates,
-            const unordered_map<int, unordered_set<int>>& adjacencyList) {
+void expand(const vector<int>& subgraph, vector<int> candidates,
+            const unordered_map<int, vector<int>>& adjacencyList, int maxVertex) {
     
     if (subgraph.empty()) {
-        vector<int> clique(currentClique.begin(), currentClique.end());
-        sort(clique.begin(), clique.end());
-
-        string cliqueString;
-        for (int v : clique) cliqueString += to_string(v) + " ";
-        
-        if (uniqueCliques.find(cliqueString) == uniqueCliques.end()) {
-            uniqueCliques.insert(cliqueString);
-            
-            int size = clique.size();
-            size_to_count[size]++;
-            totalCliques++;
-            largestCliqueSize = max(largestCliqueSize, size);
-            
-            cout << "Maximal Clique (Size " << size << "): ";
-            for (int v : clique) cout << v << " ";
-            cout << endl;
-        }
+        int size = currentClique.size();
+        size_to_count[size]++;
+        totalCliques++;
+        largestCliqueSize = max(largestCliqueSize, size);
+        return;
     } else {
-        int u = *subgraph.begin();
-        unordered_set<int> extendU = candidates;
+        vector<bool> isCandidate(maxVertex + 1, false);
+        for (int cand : candidates)
+            isCandidate[cand] = true;
 
-        if (adjacencyList.find(u) != adjacencyList.end()) {
-            for (int vertex : adjacencyList.at(u)) {
-                extendU.erase(vertex);
+        int pivot = -1;
+        int maxDegree = -1;
+        for (int cand : candidates) {
+            int deg = 0;
+            if (adjacencyList.find(cand) != adjacencyList.end()) {
+                for (int neigh : adjacencyList.at(cand)) {
+                    if (neigh <= maxVertex && isCandidate[neigh])
+                        deg++;
+                }
+            }
+            if (deg > maxDegree) {
+                maxDegree = deg;
+                pivot = cand;
             }
         }
+        if (pivot == -1 && !candidates.empty())
+            pivot = candidates.front();
 
-        while (!extendU.empty()) {
-            int q = *extendU.begin();
-            extendU.erase(q);
+        vector<int> extendU;
+        vector<bool> pivotNeighbor(maxVertex + 1, false);
+        if (adjacencyList.find(pivot) != adjacencyList.end()) {
+            for (int neigh : adjacencyList.at(pivot)) {
+                if (neigh <= maxVertex)
+                    pivotNeighbor[neigh] = true;
+            }
+        }
+        for (int cand : candidates) {
+            if (!pivotNeighbor[cand])
+                extendU.push_back(cand);
+        }
 
-            currentClique.insert(q);
+        for (int q : extendU) {
+            currentClique.push_back(q);
 
-            unordered_set<int> subgraphQ, candidatesQ;
-            for (int vertex : subgraph) {
-                if (adjacencyList.count(q) && adjacencyList.at(q).count(vertex)) {
-                    subgraphQ.insert(vertex);
+            vector<int> newSubgraph;
+            if (adjacencyList.find(q) != adjacencyList.end()) {
+                vector<bool> isNeighbor(maxVertex + 1, false);
+                for (int neigh : adjacencyList.at(q))
+                    if (neigh <= maxVertex)
+                        isNeighbor[neigh] = true;
+                for (int vertex : subgraph) {
+                    if (isNeighbor[vertex])
+                        newSubgraph.push_back(vertex);
                 }
             }
-            for (int vertex : candidates) {
-                if (adjacencyList.count(q) && adjacencyList.at(q).count(vertex)) {
-                    candidatesQ.insert(vertex);
+
+            vector<int> newCandidates;
+            if (adjacencyList.find(q) != adjacencyList.end()) {
+                vector<bool> isNeighbor(maxVertex + 1, false);
+                for (int neigh : adjacencyList.at(q))
+                    if (neigh <= maxVertex)
+                        isNeighbor[neigh] = true;
+                for (int vertex : candidates) {
+                    if (isNeighbor[vertex])
+                        newCandidates.push_back(vertex);
                 }
             }
 
-            expand(subgraphQ, candidatesQ, adjacencyList);
+            expand(newSubgraph, newCandidates, adjacencyList, maxVertex);
 
-            candidates.erase(q);
-            currentClique.erase(q);
+            currentClique.pop_back();
+            candidates.erase(remove(candidates.begin(), candidates.end(), q), candidates.end());
         }
     }
 }
 
-
-void CLIQUES(unordered_set<int>& vertices, vector<pair<int, int>>& edges, const string& filename) {
+void CLIQUES(const string& filename) {
     ifstream file(filename);
     if (!file) {
         cerr << "Error: Unable to open file " << filename << "\n";
         exit(1);
     }
 
+    unordered_map<int, vector<int>> adjacencyList;
+    vector<int> vertices;
+    int maxVertex = 0;
+
     string line;
-    cout << "Reading file...\n";
-
-    unordered_map<int, unordered_set<int>> adjacencyList;
     while (getline(file, line)) {
-        if (line[0] == '#') continue; // Ignore comment lines
-
+        if (line.empty() || line[0] == '#') continue;
         stringstream ss(line);
         int u, v;
         if (!(ss >> u >> v)) continue;
+        if (u == v) continue;
 
-        if (u != v) { // Avoid self-loops
-            adjacencyList[u].insert(v);
-            adjacencyList[v].insert(u);
-            vertices.insert(u);
-            vertices.insert(v);
-        }
+        adjacencyList[u].push_back(v);
+        adjacencyList[v].push_back(u);
+        vertices.push_back(u);
+        vertices.push_back(v);
+        maxVertex = max(maxVertex, max(u, v));
     }
 
     file.close();
-    expand(vertices, vertices, adjacencyList);
-}
 
+    sort(vertices.begin(), vertices.end());
+    vertices.erase(unique(vertices.begin(), vertices.end()), vertices.end());
+
+    for (auto& entry : adjacencyList) {
+        sort(entry.second.begin(), entry.second.end());
+        entry.second.erase(unique(entry.second.begin(), entry.second.end()), entry.second.end());
+    }
+
+    expand(vertices, vertices, adjacencyList, maxVertex);
+}
 
 int main() {
     auto start = high_resolution_clock::now();
 
-    unordered_set<int> vertices;
-    vector<pair<int, int>> edges;
-    string filename = "Wiki-Vote.txt";
-    CLIQUES(vertices, edges, filename);
+    string filename = "Email-Enron.txt";
+    CLIQUES(filename);
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);

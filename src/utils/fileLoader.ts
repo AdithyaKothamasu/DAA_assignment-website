@@ -1,7 +1,11 @@
 export async function loadCodeFile(filePath: string): Promise<string> {
   try {
-    // Use a relative path for fetch
-    const response = await fetch(filePath);
+    // Add base path for absolute paths
+    const adjustedPath = filePath.startsWith('/') 
+      ? import.meta.env.BASE_URL + filePath.slice(1) 
+      : filePath;
+    
+    const response = await fetch(adjustedPath);
     
     if (!response.ok) {
       throw new Error(`Failed to load file: ${filePath} (Status: ${response.status})`);
