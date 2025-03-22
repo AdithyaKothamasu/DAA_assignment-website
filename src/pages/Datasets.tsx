@@ -12,7 +12,7 @@ export function Datasets() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-medium text-gray-900">Dataset {datasetNum}</h3>
+                <h3 className="text-lg font-medium text-gray-900">TestCase {datasetNum}</h3>
                 <p className="text-sm text-gray-500">Sample dataset for testing</p>
               </div>
               <span className="text-indigo-600 hover:text-indigo-700">Download</span>

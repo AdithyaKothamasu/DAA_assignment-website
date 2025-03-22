@@ -3,7 +3,6 @@ export interface AlgorithmData {
   nameingraph: string;
   paper: string;
   paperUrl: string;
-  description: string;
   timeComplexity: string;
   results: {
     testCase1: number;

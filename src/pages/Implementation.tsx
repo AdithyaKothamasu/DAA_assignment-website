@@ -11,10 +11,15 @@ SyntaxHighlighter.registerLanguage('cpp', cpp);
 
 interface Props {
   algorithms: AlgorithmData[];
+  initialSelected?: string;
 }
 
-export function Implementation({ algorithms }: Props) {
-  const [selectedAlgo, setSelectedAlgo] = useState<string>(algorithms[0].name);
+export function Implementation({ algorithms, initialSelected = "" }: Props) {
+  const [selectedAlgo, setSelectedAlgo] = useState<string>(
+    initialSelected && algorithms.some(a => a.name === initialSelected)
+      ? initialSelected
+      : algorithms[0].name
+  );
   const [codeContent, setCodeContent] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<Record<string, boolean>>({});

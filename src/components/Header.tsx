@@ -1,6 +1,6 @@
 interface Props {
   activeTab: string;
-  onTabChange: (tab: 'overview' | 'datasets' | 'implementation') => void;
+  onTabChange: (tab: 'overview' | 'datasets' | 'implementation' | 'details') => void;
 }
 
 export function Header({ activeTab, onTabChange }: Props) {
@@ -12,17 +12,17 @@ export function Header({ activeTab, onTabChange }: Props) {
             <h1 className="text-2xl font-bold text-gray-900">Maximal Clique Enumeration Algorithms and Analysis</h1>
           </div>
           <nav className="flex space-x-4">
-            {['overview', 'implementation', 'datasets'].map((tab) => (
+            {['overview', 'implementation', 'details', 'datasets'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => onTabChange(tab as 'overview' | 'datasets' | 'implementation')}
+                onClick={() => onTabChange(tab as 'overview' | 'datasets' | 'implementation' | 'details')}
                 className={`px-3 py-2 rounded-md ${
                   activeTab === tab
                     ? 'bg-indigo-100 text-indigo-700'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'details' ? 'Details & Observations' : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </nav>

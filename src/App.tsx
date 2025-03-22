@@ -3,18 +3,19 @@ import { Header } from './components/Header';
 import { Overview } from './pages/Overview';
 import { Datasets } from './pages/Datasets';
 import { Implementation } from './pages/Implementation.tsx';
+import { DetailsAndObservations } from './pages/DetailsAndObservations';
 import { AlgorithmData } from './types';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'datasets' | 'implementation'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'datasets' | 'implementation' | 'details'>('overview');
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState<string>("");
 
   const algorithms: AlgorithmData[] = [
     {
       name: "Chiba-1985-arboricity",
       nameingraph: "Chiba",
-      paper: "ARBORICITY AND SUBGRAPH LISTING ALGORITHMS*",
+      paper: "Arboricity And Subgraph Listing Algorithms by Norishige Chiba and Takao Nishizeki",
       paperUrl: "/papers/chiba copy.pdf",  // Replace with actual URL
-      description: "Brief description of the first algorithm and its approach to solving the problem.",
       timeComplexity: "O(n log n)",
       results: {
         testCase1: 120,
@@ -31,16 +32,15 @@ function App() {
       nameingraph: "Tomita",
       paper: "The worst-case time complexity for generating all maximal cliques and computational experiments",
       paperUrl: "/papers/tomita copy.pdf",  // Replace with actual URL
-      description: "Brief description of the second algorithm and its approach to solving the problem.",
-      timeComplexity: "O(n²)",
+      timeComplexity: "O(3^(n/3))",
       results: {
-        testCase1: 150,
+        testCase1: 881740,
         testCase2: 280,
         testCase3: 420
       },
       implementation: {
         language: 'cpp',
-        filePath: '/code/tomita.cpp'
+        filePath: '/code/Tomita.cpp'
       }
     },
     {
@@ -48,7 +48,6 @@ function App() {
       nameingraph: "ELS",
       paper: "Listing All Maximal Cliques in Sparse Graphs in Near-optimal Time",
       paperUrl: "/papers/ELS copy.pdf",  // Replace with actual URL
-      description: "The implementation follows the degeneracy-ordered Bron-Kerbosch algorithm proposed in the paper. This algorithm efficiently enumerates maximal cliques in graphs with low degeneracy, achieving a time complexity of O(dn.3^(d/3)), where d is the graph's degeneracy and n the number of vertices.",
       timeComplexity: "O(dn.3^(d/3))",
       results: {
         testCase1: 129385,
@@ -68,11 +67,23 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="space-y-12">
           {activeTab === 'overview' ? (
-            <Overview algorithms={algorithms} />
+            <Overview 
+              algorithms={algorithms} 
+              onTabChange={setActiveTab}
+              setSelectedAlgorithm={setSelectedAlgorithm}
+            />
           ) : activeTab === 'datasets' ? (
             <Datasets />
+          ) : activeTab === 'implementation' ? (
+            <Implementation 
+              algorithms={algorithms} 
+              initialSelected={selectedAlgorithm}
+            />
           ) : (
-            <Implementation algorithms={algorithms} />
+            <DetailsAndObservations 
+              algorithms={algorithms}
+              initialSelected={selectedAlgorithm}
+            />
           )}
         </div>
       </main>
