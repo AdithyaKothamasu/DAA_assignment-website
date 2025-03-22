@@ -36,7 +36,7 @@ function App() {
       results: {
         testCase1: 2557,
         testCase2: 4957,
-        testCase3: 19634409
+        testCase3: 14520257
       },
       implementation: {
         language: 'cpp',
