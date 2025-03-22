@@ -1,0 +1,41 @@
+Starting program execution...
+Reading file: Wikipedia Vote Network.txt...
+Edges: 51844 | Nodes: 7115
+Adjacency list conversion completed.
+Graph Loaded! Nodes: 7115
+Starting Run 1...
+Degeneracy ordering computed.
+Graph degeneracy: 53
+0 1 2 3 4 5 6 7 Run 1 execution time: 3259 ms
+
+--- Execution Time Table ---
+---------------------------------
+| Run # | Execution Time (ms)    |
+---------------------------------
+|     1  |        3259 ms   |
+---------------------------------
+| Avg   |        3259 ms   |
+---------------------------------
+| Clique Size | Number of Cliques       |
+----------------------------------------
+|           2 |                 8655 |
+|           3 |                13718 |
+|           4 |                27292 |
+|           5 |                48416 |
+|           6 |                68872 |
+|           7 |                83266 |
+|           8 |                76732 |
+|           9 |                54456 |
+|          10 |                35470 |
+|          11 |                21736 |
+|          12 |                11640 |
+|          13 |                 5449 |
+|          14 |                 2329 |
+|          15 |                  740 |
+|          16 |                  208 |
+|          17 |                   23 |
+----------------------------------------
+
+Total Number of Maximal Cliques: 459002
+
+Program execution finished.
