@@ -52,6 +52,62 @@ export const TomitaContent: React.FC<TomitaContentProps> = ({ expandedSections, 
             <li className="mb-2">Uses degeneracy ordering to process vertices</li>
             <li className="mb-2">Employs pivot selection to reduce search space</li>
           </ul>
+
+          <h3 className="text-lg font-medium mb-2">Time Complexity Analysis</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li className="mb-2">Worst-case time complexity: O(3^(n/3))</li>
+            <li className="mb-2">Space complexity: O(n^2) due to adjacency matrix storage</li>
+          </ul>
+
+          <h3 className="text-lg font-medium mb-2">Key Components</h3>
+          <ol className="list-decimal pl-6 mb-4">
+            <li className="mb-2">
+              <strong>Depth-First Search Traversal:</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Ensures systematic enumeration of all maximal cliques</li>
+                <li>Uses backtracking to explore all possibilities</li>
+              </ul>
+            </li>
+            <li className="mb-2">
+              <strong>Pivot Selection Strategy:</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Selects vertex with highest degree as pivot</li>
+                <li>Minimizes recursive calls by pruning non-neighbors</li>
+              </ul>
+            </li>
+            <li className="mb-2">
+              <strong>Pruning Mechanisms:</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Processed Vertex Exclusion: Prevents re-examining vertices</li>
+                <li>Pivot-based Filtering: Eliminates redundant recursive calls</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h3 className="text-lg font-medium mb-2">Implementation Details</h3>
+          <div className="mb-4">
+            <p className="mb-2"><strong>1. Graph Input and Preprocessing:</strong></p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Reads edge list format, ignoring comment lines</li>
+              <li>Constructs adjacency list using unordered_map</li>
+              <li>Removes duplicate edges and sorts adjacency lists</li>
+            </ul>
+
+            <p className="mb-2"><strong>2. Recursive Clique Expansion:</strong></p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Processes subgraph of remaining nodes</li>
+              <li>Maintains candidates for possible clique extensions</li>
+              <li>Uses pivot selection to reduce recursive calls</li>
+            </ul>
+
+            <p className="mb-2"><strong>3. Performance Optimizations:</strong></p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Uses pivoting to reduce branching</li>
+              <li>Implements sorted adjacency lists for fast lookup</li>
+              <li>Employs bitmask-like boolean arrays</li>
+              <li>Efficient candidate set management</li>
+            </ul>
+          </div>
         </div>
       </CollapsibleSection>
 

@@ -113,6 +113,51 @@ export const ChibaNishizekiContent: React.FC<ChibaNishizekiContentProps> = ({ ex
           </ul>
         </div>
       </CollapsibleSection>
+
+      <CollapsibleSection 
+        title="Implementation Details"
+        id="chiba-implementation"
+        isExpanded={expandedSections["chiba-implementation"] !== false}
+        toggleExpanded={() => toggleSection("chiba-implementation")}
+      >
+        <div>
+          <h3 className="text-lg font-medium mb-2">Implementation Details</h3>
+          <ol className="list-decimal pl-6 mb-4">
+            <li className="mb-2">
+              <strong>Graph Input and Preprocessing</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Reads graph from input file</li>
+                <li>Constructs optimized adjacency list</li>
+                <li>Implements degree-based vertex reordering</li>
+              </ul>
+            </li>
+            <li className="mb-2">
+              <strong>Clique Exploration Function</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Handles vertex separation (adjacent vs non-adjacent)</li>
+                <li>Implements constraint checking</li>
+                <li>Manages clique maximality verification</li>
+              </ul>
+            </li>
+            <li className="mb-2">
+              <strong>Optimization Techniques</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Degree-based vertex ordering</li>
+                <li>Two-pointer intersection updates</li>
+                <li>Early termination checks</li>
+                <li>Stream-based output handling</li>
+              </ul>
+            </li>
+          </ol>
+
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-4">
+            <p className="text-yellow-700">
+              <strong>Note:</strong> While theoretically the Chiba-Nishizeki Algorithm should be fastest for the as-skitter dataset, 
+              computational constraints may have led to discrepancies in the actual results.
+            </p>
+          </div>
+        </div>
+      </CollapsibleSection>
     </div>
   );
 };

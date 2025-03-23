@@ -93,6 +93,41 @@ export const ELSContent: React.FC<ELSContentProps> = ({ expandedSections, toggle
             <li className="mb-2"><strong>Clique Counting</strong>: Stores results in cliqueCount (size → frequency map).</li>
             <li className="mb-2"><strong>Memory Optimization</strong>: Avoids adjacency matrices; uses sorted adjacency lists.</li>
           </ul>
+
+          <h3 className="text-lg font-medium mb-2">Implementation Steps</h3>
+          <ol className="list-decimal pl-6 mb-4">
+            <li className="mb-2">
+              <strong>Graph Loading</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Reads input graph</li>
+                <li>Creates efficient adjacency list representation</li>
+              </ul>
+            </li>
+            <li className="mb-2">
+              <strong>Degeneracy Ordering Initialization</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Computes graph degeneracy order</li>
+                <li>Optimizes vertex processing sequence</li>
+                <li>Constructs candidate sets (globalP, globalX)</li>
+              </ul>
+            </li>
+            <li className="mb-2">
+              <strong>Two-Pointer Merge Optimization</strong>
+              <ul className="list-disc pl-6 mt-2">
+                <li>Efficient set intersection operations</li>
+                <li>Avoids expensive traditional set operations</li>
+                <li>Improves performance on large graphs</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h3 className="text-lg font-medium mb-2">Performance Optimizations</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li className="mb-2">Degeneracy-based vertex ordering</li>
+            <li className="mb-2">Efficient pivot selection strategy</li>
+            <li className="mb-2">Two-pointer intersection technique</li>
+            <li className="mb-2">Disk-based result streaming</li>
+          </ul>
         </div>
       </CollapsibleSection>
 

@@ -36,12 +36,12 @@ export function AlgorithmCard({ algorithm, onNavigate }: Props) {
       </div>
       
       <div className="flex space-x-3 mt-4">
-        <button 
+        {/* <button 
           onClick={() => onNavigate('details', algorithm.name)}
           className="flex-1 bg-indigo-600 text-white py-2 px-3 rounded-md hover:bg-indigo-700 transition-colors duration-200 text-sm font-medium"
         >
         Details
-        </button>
+        </button> */}
         <button 
           onClick={() => onNavigate('implementation', algorithm.name)}
           className="flex-1 bg-emerald-600 text-white py-2 px-3 rounded-md hover:bg-emerald-700 transition-colors duration-200 text-sm font-medium"

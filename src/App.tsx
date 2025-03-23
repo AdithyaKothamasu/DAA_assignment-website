@@ -3,11 +3,10 @@ import { Header } from './components/Header';
 import { Overview } from './pages/Overview';
 import { Datasets } from './pages/Datasets';
 import { Implementation } from './pages/Implementation.tsx';
-import { DetailsAndObservations } from './pages/DetailsAndObservations';
 import { AlgorithmData } from './types';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'datasets' | 'implementation' | 'details'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'datasets' | 'implementation'>('overview');
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string>("");
 
   const algorithms: AlgorithmData[] = [
@@ -16,11 +15,11 @@ function App() {
       nameingraph: "Chiba",
       paper: "Arboricity And Subgraph Listing Algorithms by Norishige Chiba and Takao Nishizeki",
       paperUrl: `${import.meta.env.BASE_URL}papers/chiba copy.pdf`,
-      timeComplexity: "O(n log n)",
+      timeComplexity: "O(a(G)m)",
       results: {
-        testCase1: 120,
-        testCase2: 250,
-        testCase3: 380
+        testCase1:  321563,
+        testCase2: 6201890 ,
+        testCase3: 0
       },
       implementation: {
         language: 'cpp',
@@ -74,14 +73,9 @@ function App() {
             />
           ) : activeTab === 'datasets' ? (
             <Datasets />
-          ) : activeTab === 'implementation' ? (
+          ) : (
             <Implementation 
               algorithms={algorithms} 
-              initialSelected={selectedAlgorithm}
-            />
-          ) : (
-            <DetailsAndObservations 
-              algorithms={algorithms}
               initialSelected={selectedAlgorithm}
             />
           )}

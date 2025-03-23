@@ -118,11 +118,7 @@ void DO(int &degeneracy) {
     cout << "Degeneracy ordering computed.\n";
 }
 
-/*
-   In-place Bron–Kerbosch recursion using inline two-pointer intersection.
-   This version assumes that globalP and globalX are maintained in sorted order.
-   Instead of storing cliques in memory, we write each clique to disk.
-*/
+
 void BronKerboschRecursionInPlace() {
     if (globalP.empty() && globalX.empty()) {
         writeCliqueToFile(globalR);
@@ -287,7 +283,6 @@ int main() {
     cliqueOut.close();
     
     // Build and print summary tables.
-    // (Since cliques are streamed to disk, we don't have them in memory.)
     double avgTime = accumulate(runTimes.begin(), runTimes.end(), 0.0) / numRuns;
     
     cout << "\n--- Execution Time Table ---\n";

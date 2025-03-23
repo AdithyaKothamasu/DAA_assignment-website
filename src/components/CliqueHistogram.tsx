@@ -74,6 +74,10 @@ export function CliqueHistogram({ outputFile, title, height = 400 }: Props) {
         backgroundColor: 'rgba(99, 102, 241, 0.5)',
         borderColor: 'rgb(99, 102, 241)',
         borderWidth: 1,
+        borderRadius: 0,
+        barPercentage: 1.0,
+        categoryPercentage: 1.0,
+        barThickness: 'flex'
       },
     ],
   };
@@ -123,7 +127,9 @@ export function CliqueHistogram({ outputFile, title, height = 400 }: Props) {
           font: {
             weight: 'bold' as const
           }
-        }
+        },
+        barPercentage: 1.0,
+        categoryPercentage: 1.0
       },
     },
   };
