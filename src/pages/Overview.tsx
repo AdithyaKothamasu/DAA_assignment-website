@@ -1,7 +1,7 @@
 import { AlgorithmData } from '../types.ts';
 import { AlgorithmCard } from '../components/AlgorithmCard';
-import { BarChartJS } from '../components/BarChartJS';
-import { CliqueHistogram } from '../components/CliqueHistogram';
+import { DensityChart } from '../components/DensityChart'; // Import DensityChart
+import { ExecutionTimeChart } from '../components/ExecutionTimeChart'; // Import ExecutionTimeChart
 
 interface Props {
   algorithms: AlgorithmData[];
@@ -36,59 +36,18 @@ export function Overview({ algorithms, onTabChange, setSelectedAlgorithm }: Prop
         </div>
       </div>
 
+      {/* Add Density Chart Section */}
       <div className="bg-white rounded-lg shadow-md p-6 mt-12">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Execution Times Histogram</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {datasets.map((dataset) => (
-            <BarChartJS 
-              key={dataset.id} 
-              testNum={dataset.id} 
-              datasetName={dataset.name}
-              algorithms={algorithms} 
-            />
-          ))}
-        </div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Dataset Density Comparison</h2>
+        <DensityChart />
+      </div>
+
+      {/* Add Execution Time Chart Section */}
+      <div className="bg-white rounded-lg shadow-md p-6 mt-12">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Dataset Execution Time Comparison</h2>
+        <ExecutionTimeChart />
       </div>
       
-      <div className="bg-white rounded-lg shadow-md p-6 mt-12">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Clique Size Distribution</h2>
-        
-        {/* WikiVote Dataset Histogram */}
-        <div className="mb-12">
-          <h3 className="text-lg font-medium text-gray-800 mb-4">WikiVote Dataset</h3>
-          <div className="h-[500px]">
-            <CliqueHistogram 
-              outputFile="/code/WikiVote output ELS.txt" 
-              title="WikiVote Dataset - Clique Size Distribution" 
-              height={500}
-            />
-          </div>
-        </div>
-        
-        {/* Email-Enron Dataset Histogram */}
-        <div className="mb-12">
-          <h3 className="text-lg font-medium text-gray-800 mb-4">Email-Enron Dataset</h3>
-          <div className="h-[500px]">
-            <CliqueHistogram 
-              outputFile="/code/Email-Enron output ELS.txt" 
-              title="Email-Enron Dataset - Clique Size Distribution" 
-              height={500}
-            />
-          </div>
-        </div>
-        
-        {/* Skitter Dataset Histogram */}
-        <div>
-          <h3 className="text-lg font-medium text-gray-800 mb-4">Skitter Dataset</h3>
-          <div className="h-[500px]">
-            <CliqueHistogram 
-              outputFile="/code/skitter output els.txt" 
-              title="Skitter Dataset - Clique Size Distribution" 
-              height={500}
-            />
-          </div>
-        </div>
-      </div>
     </>
   );
 }

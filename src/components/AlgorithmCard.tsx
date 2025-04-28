@@ -28,14 +28,7 @@ export function AlgorithmCard({ algorithm, onNavigate }: Props) {
         </a>
       </div>
       
-      <div className="bg-gray-50 rounded-md px-3 py-2 mb-4">
-        <div className="flex items-center text-gray-700">
-          <span className="text-sm font-medium">Time Complexity:</span>
-          <span className="ml-2 text-sm">{algorithm.timeComplexity}</span>
-        </div>
-      </div>
-      
-      <div className="flex space-x-3 mt-4">
+      <div className="flex space-x-3 mt-8"> {/* Increased top margin */}
         {/* <button 
           onClick={() => onNavigate('details', algorithm.name)}
           className="flex-1 bg-indigo-600 text-white py-2 px-3 rounded-md hover:bg-indigo-700 transition-colors duration-200 text-sm font-medium"
