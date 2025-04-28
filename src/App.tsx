@@ -1,63 +1,45 @@
-import { useState } from 'react';
-import { Header } from './components/Header';
-import { Overview } from './pages/Overview';
-import { Datasets } from './pages/Datasets';
-import { Implementation } from './pages/Implementation.tsx';
-import { AlgorithmData } from './types';
+import { useState } from "react";
+import { Header } from "./components/Header";
+import { Overview } from "./pages/Overview";
+import { Datasets } from "./pages/Datasets";
+import { Implementation } from "./pages/Implementation.tsx";
+import { AlgorithmData } from "./types";
+
+import { DetailsAndObservations } from "./pages/DetailsAndObservations"; // Import the component
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'datasets' | 'implementation'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "datasets" | "implementation" | "details"
+  >("overview");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string>("");
 
   const algorithms: AlgorithmData[] = [
     {
-      name: "Chiba-1985-arboricity",
-      nameingraph: "Chiba",
-      paper: "Arboricity And Subgraph Listing Algorithms by Norishige Chiba and Takao Nishizeki",
-      paperUrl: `${import.meta.env.BASE_URL}papers/chiba copy.pdf`,
-      timeComplexity: "O(a(G)m)",
+      name: "Exact Algorithm",
+      nameingraph: "Densest Subgraph (h-Clique)", // Or a shorter name if preferred
+      paper: "Efficient Algorithms for Densest Subgraph Discovery", // Placeholder paper title
+      paperUrl: "public/papers/efficient algo copy.pdf",
       results: {
-        testCase1:  321563,
-        testCase2: 6201890 ,
-        testCase3: 0
+        // Placeholder results
+        testCase1: 0,
+        testCase2: 0,
+        testCase3: 0,
       },
       implementation: {
-        language: 'cpp',
-        filePath: `${import.meta.env.BASE_URL}code/chiba.cpp`
-      }
-    },
+        language: "cpp",
+        filePath: `${import.meta.env.BASE_URL}code/DensestSubgraph.cpp`,
+      },
+    }, // Add comma here
     {
-      name: "tomita06cliques",
-      nameingraph: "Tomita",
-      paper: "The worst-case time complexity for generating all maximal cliques and computational experiments",
-      paperUrl: `${import.meta.env.BASE_URL}papers/tomita copy.pdf`,
-      timeComplexity: "O(3^(n/3))",
-      results: {
-        testCase1: 2557,
-        testCase2: 4957,
-        testCase3: 14520257
-      },
+      name: "CoreExact",
+      nameingraph: "CoreExact",
+      paper: "Efficient Algorithms for Densest Subgraph Discovery",
+      paperUrl: "public/papers/efficient algo copy.pdf",
       implementation: {
-        language: 'cpp',
-        filePath: `${import.meta.env.BASE_URL}code/Tomita.cpp`
-      }
+        language: "cpp",
+        filePath: `${import.meta.env.BASE_URL}code/4.cpp`,
+      },
     },
-    {
-      name: "ELS",
-      nameingraph: "ELS",
-      paper: "Listing All Maximal Cliques in Sparse Graphs in Near-optimal Time",
-      paperUrl: `${import.meta.env.BASE_URL}papers/ELS copy.pdf`,
-      timeComplexity: "O(dn.3^(d/3))",
-      results: {
-        testCase1: 3259,
-        testCase2: 4657,
-        testCase3: 1.33532e+07
-      },
-      implementation: {
-        language: 'cpp',
-        filePath: `${import.meta.env.BASE_URL}code/ELS.cpp`
-      }
-    }
   ];
 
   return (
@@ -65,17 +47,23 @@ function App() {
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
       <main className="max-w-8xl mx-auto px-10 py-8">
         <div className="space-y-12">
-          {activeTab === 'overview' ? (
-            <Overview 
-              algorithms={algorithms} 
+          {activeTab === "overview" ? (
+            <Overview
+              algorithms={algorithms}
               onTabChange={setActiveTab}
               setSelectedAlgorithm={setSelectedAlgorithm}
             />
-          ) : activeTab === 'datasets' ? (
+          ) : activeTab === "datasets" ? (
             <Datasets />
+          ) : activeTab === "implementation" ? ( // Keep Implementation tab
+            <Implementation
+              algorithms={algorithms}
+              initialSelected={selectedAlgorithm}
+            />
           ) : (
-            <Implementation 
-              algorithms={algorithms} 
+            // Add the 'details' tab rendering
+            <DetailsAndObservations
+              algorithms={algorithms}
               initialSelected={selectedAlgorithm}
             />
           )}

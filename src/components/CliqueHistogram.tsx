@@ -9,6 +9,7 @@ import {
   Legend
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import type { ChartData, ChartOptions, TooltipItem } from 'chart.js'; // Import necessary types
 import { parseELSOutput, ParsedELSOutput } from '../utils/parseCliqueData';
 
 // Register ChartJS components
@@ -77,12 +78,12 @@ export function CliqueHistogram({ outputFile, title, height = 400 }: Props) {
         borderRadius: 0,
         barPercentage: 1.0,
         categoryPercentage: 1.0,
-        barThickness: 'flex'
+        barThickness: "flex" as const // Ensure 'flex' is treated as a literal type
       },
     ],
   };
 
-  const chartOptions = {
+  const chartOptions: ChartOptions<'bar'> = { // Add explicit type annotation
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -98,7 +99,7 @@ export function CliqueHistogram({ outputFile, title, height = 400 }: Props) {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: function(context: TooltipItem<'bar'>) { // Use TooltipItem type
             return `Count: ${context.raw.toLocaleString()}`;
           }
         }
@@ -115,7 +116,7 @@ export function CliqueHistogram({ outputFile, title, height = 400 }: Props) {
           }
         },
         ticks: {
-          callback: function(value: any) {
+          callback: function(value: string | number) { // Use string | number type
             return value.toLocaleString();
           }
         }

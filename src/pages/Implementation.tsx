@@ -54,42 +54,20 @@ export function Implementation({ algorithms, initialSelected = "" }: Props) {
 
   // Fallback code samples in case file loading fails
   const fallbackCode: Record<string, string> = {
-    "Chiba-1985-arboricity": `// Sample implementation of Chiba algorithm
+    "DensestSubgraph": `// Sample implementation for Densest Subgraph (h-Clique)
 #include <vector>
-#include <set>
 #include <iostream>
+#include <numeric>
 
-void findCliques(const std::vector<std::set<int>>& graph) {
-    // Implementation of the Chiba arboricity-based algorithm
-    // for maximal clique enumeration
-    // ...
-}`,
-    "tomita06cliques": `// Sample implementation of Tomita algorithm
-#include <vector>
-#include <set>
-#include <algorithm>
-
-void bronKerbosch(std::set<int> R, std::set<int> P, std::set<int> X,
-                 const std::vector<std::set<int>>& graph) {
-    if (P.empty() && X.empty()) {
-        // Report maximum clique R
-        return;
-    }
-    // Choose pivot
-    // ...
-}`,
-    "ELS": `// Sample implementation of ELS algorithm
-#include <vector>
-#include <set>
-#include <algorithm>
-
-void findCliquesELS(const std::vector<std::set<int>>& graph) {
-    // ELS algorithm implementation for maximal clique enumeration
-    // ...
+// Placeholder for the complex flow network and binary search logic
+std::vector<int> findDensestSubgraph(int h) {
+    std::cout << "Finding densest subgraph with h=" << h << std::endl;
+    // ... implementation using max-flow/min-cut ...
+    return {};
 }`
   };
 
-  return (
+ return (
     <div className="space-y-8">
       <div className="bg-white rounded-lg shadow-md p-4">
         <div className="flex items-center">
